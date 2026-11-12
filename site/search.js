@@ -8,7 +8,7 @@ const modules = Array.from(document.querySelectorAll('[data-module]'), (module) 
   return {
     module,
     lessons: Array.from(module.querySelectorAll('li'), (row) => ({
-      row, text: `${title} ${normalize(row.textContent + ' ' + row.dataset.topics)}`,
+      row, text: `${title} ${normalize(row.querySelector('.t').textContent + ' ' + row.dataset.topics)}`,
     })),
   };
 });
