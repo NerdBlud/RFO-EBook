@@ -58,7 +58,7 @@ def page(title, content, prefix="", script=""):
 <body>
 <a class="skip" href="#main">Məzmuna keç</a>
 <header class="site-header"><div class="frame header-inner">
-  <a class="brand" href="{prefix}index.html">RFO E-Kitabı</a>
+  <a class="brand" href="{prefix}index.html"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span> RFO E-Kitabı</a>
   <nav aria-label="Əsas keçidlər"><a href="{prefix}index.html#modules">Modullar</a>
   <a href="{prefix}reuse.html">İstifadə şərtləri</a></nav>
 </div></header>
@@ -81,6 +81,7 @@ def build():
     (OUTPUT / "pdf").mkdir(exist_ok=True)
     for asset in ("style.css", "search.js"):
         shutil.copyfile(SOURCE / asset, OUTPUT / asset)
+    shutil.copytree(SOURCE / "fonts", OUTPUT / "fonts", dirs_exist_ok=True)
 
     def slug(number, path):
         return f"{number:02}-{numbered(path)[0]:02}"
@@ -97,14 +98,19 @@ def build():
             for path in paths
         )
         sections.append(f"""<section class="module" id="modul-{number}" data-module>
-  <h3><span>{number:02}</span> {escape(title)}</h3>
+  <h3><span>{number:02}</span><span>{escape(title)}</span></h3>
   <ol>{items}</ol>
 </section>""")
     index = f"""<section class="hero">
-  <p class="meta">C++20 · {len(modules)} modul · {len(flattened)} dərs</p>
-  <h1>İnformatika olimpiadalarına hazırlıq</h1>
-  <p>Azərbaycan dilində C++ dərsləri və məşq materialları. Əsas sintaksisdən qraflara, dinamik proqramlaşdırmaya və qabaqcıl alqoritmlərə qədər.</p>
-  <a class="button" href="lessons/{slug(flattened[0][0], flattened[0][2])}.html">İlk dərsə başla</a>
+  <div class="hero-copy">
+    <p class="meta">C++20 · {len(modules)} modul · {len(flattened)} dərs</p>
+    <h1>İnformatika olimpiadalarına <em>hazırlıq</em></h1>
+    <p>Azərbaycan dilində C++ dərsləri və məşq materialları. Əsas sintaksisdən qraflara, dinamik proqramlaşdırmaya və qabaqcıl alqoritmlərə qədər.</p>
+    <a class="button" href="lessons/{slug(flattened[0][0], flattened[0][2])}.html">İlk dərsə başla <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="book-stage" aria-hidden="true">
+    <div class="book-cover"><div class="book-type">RFO<span>E-Kitabı</span></div><div class="book-mark">&lt;/&gt;</div></div>
+  </div>
 </section>
 <section id="modules" aria-labelledby="modules-title">
   <div class="section-heading"><h2 id="modules-title">Dərs kataloqu</h2>
